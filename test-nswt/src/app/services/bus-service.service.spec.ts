@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BusServiceService } from './bus-service.service';
 import { BusApiService } from './bus-api.service';
 import { AppModule } from '../app.module';
+import {BusStatuses} from '../models/bus-statuses.enum';
 import { BusInfoByOrganization, BusInfoByOrganizationViewModel, BusInfo, BusInfoViewModel } from '../models/models';
 describe('BusServiceService', () => {
   const mockData = [
@@ -79,6 +80,10 @@ describe('BusServiceService', () => {
       expect(orgViewModel[0].busData.length).toBe(5);
       expect(orgViewModel[1].busData.length).toBe(3);
       expect(orgViewModel[0].busData[0].routeVariantCode).toBe('891');
+      expect(orgViewModel[0].busData[0].routeVariantLessCode).toBe(' 2 1');
+      expect(orgViewModel[0].busData[0].status).toBe(BusStatuses.Late);
+      expect(orgViewModel[0].busData[3].status).toBe(BusStatuses.Early);
+      expect(orgViewModel[1].busData[1].status).toBe(BusStatuses.OnTime);
       expect(orgViewModel[1].busData[1].routeVariantCode).toBe(undefined);
     }));
   it('should extract organizations from view model correctly',

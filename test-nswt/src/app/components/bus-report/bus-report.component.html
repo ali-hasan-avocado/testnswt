@@ -1,3 +1,28 @@
-<p>
-  bus-report works!
-</p>
+<div class="container">
+  <div>
+    <h3>Bus Reports</h3>
+  </div>
+  <div *ngFor="let orgnisation of organisations" (click)="toggle(orgnisation)">
+    <div class="row">
+      <div class="col-md-6">
+        <h4>{{orgnisation}}</h4>
+      </div>
+      <div class="col-md-6">
+        <h5>{{getOrgByName(orgnisation).date}}</h5>
+      </div>
+    </div>
+    <div class="row" *ngIf="expandCollpase[orgnisation]">
+      <div class="row">
+        <div class="col-md-4">Bus ID</div>
+        <div class="col-md-4">Route Variant</div>
+        <div class="col-md-4">Status</div>
+      </div>
+      <div class="row" *ngFor="let busInfo of getOrgByName(orgnisation).busData">
+        <div class="col-md-4">{{busInfo.busId}}</div>
+        <div class="col-md-4">
+          <strong>{{busInfo.routeVariantCode||'UNKNOWN'}}</strong>{{busInfo.routeVariantLessCode}}</div>
+        <div [class]="getStatusClasses(busInfo.status)">{{parseBusStatus(busInfo.status)}}</div>
+      </div>
+    </div>
+  </div>
+</div>

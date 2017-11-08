@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BusApiService } from './bus-api.service';
+import { BusStatuses } from '../models/bus-statuses.enum';
 import { BusInfoByOrganization, BusInfoByOrganizationViewModel, BusInfo, BusInfoViewModel } from '../models/models';
 
 @Injectable()
@@ -33,9 +34,17 @@ export class BusServiceService {
   private converTobusInfoViewModel(source: BusInfo) {
     const UNKNOWN = 'UNKNOWN';
     const vm = source as BusInfoViewModel;
-    vm.routeVariantCode = source.routeVariant && source.routeVariant.length >= 3 && source.routeVariant !== UNKNOWN
-      ? source.routeVariant.substring(0, 3)
-      : undefined;
+    if (source.routeVariant && source.routeVariant.length >= 3 && source.routeVariant !== UNKNOWN) {
+      vm.routeVariantCode = source.routeVariant.substring(0, 3);
+      vm.routeVariantLessCode = source.routeVariant.substring(3, source.routeVariant.length);
+    }
+    if (vm.deviationFromTimetable < 0) {
+      vm.status = BusStatuses.Early;
+    } else if (vm.deviationFromTimetable > 0) {
+      vm.status = BusStatuses.Late;
+    } else {
+      vm.status = BusStatuses.OnTime;
+    }
   }
   public getOrganisationNamesFromOrganisationViewModel(source: BusInfoByOrganizationViewModel[]): string[] {
     // TODO: conversion logic for translating from model to view model at bus info level

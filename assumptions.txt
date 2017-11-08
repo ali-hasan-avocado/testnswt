@@ -1,3 +1,8 @@
 1. The version of angular is angular 4
 2. deviationFromTimetable field in data measure deviation in milliseconds
 3. routeVariant in data has 3 characters always followed by a space or carries a value of UNKNOWN
+4. Setting up a global error handler for http requests is out of scope
+5. json data file will be available in app root folder
+6. Only one row of data is present in result set for one organisation for a date e.g. Sydney buses has one row for date 25/09/2015
+7. positive deviationFromTimetable means late, zero deviation means on-time and minus deviation value indicates early.
+8. Unknown route variants can also be displayed bold.

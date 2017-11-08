@@ -1,3 +1,4 @@
+import { BusStatuses } from './bus-statuses.enum';
 export class BusInfoByOrganization {
     organisation: string;
     date: string;
@@ -16,4 +17,6 @@ export class BusInfo {
 
 export class BusInfoViewModel extends BusInfo {
     routeVariantCode?: string;
+    routeVariantLessCode?: string;
+    status: BusStatuses;
 }
