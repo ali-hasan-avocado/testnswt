@@ -1,9 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BusServiceService } from '../../services/bus-service.service';
-import { AppModule } from '../../app.module';
 import { BusReportComponent } from './bus-report.component';
 import { BusInfoByOrganizationViewModel } from '../../models/models';
 import { BusStatuses } from '../../models/bus-statuses.enum';
+import { BusApiService } from '../../services/bus-api.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 describe('BusReportComponent', () => {
   let component: BusReportComponent;
@@ -88,8 +90,12 @@ describe('BusReportComponent', () => {
   ];
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule],
-      providers: [BusServiceService]
+      imports: [
+        HttpClientModule,
+        FormsModule
+      ],
+      declarations[BusReportComponent];
+      providers: [BusServiceService, BusApiService]
     })
       .compileComponents();
   }));

@@ -2,8 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { BusServiceService } from './bus-service.service';
 import { BusApiService } from './bus-api.service';
-import { AppModule } from '../app.module';
-import {BusStatuses} from '../models/bus-statuses.enum';
+import { BusStatuses } from '../models/bus-statuses.enum';
 import { BusInfoByOrganization, BusInfoByOrganizationViewModel, BusInfo, BusInfoViewModel } from '../models/models';
 describe('BusServiceService', () => {
   const mockData = [
@@ -63,9 +62,9 @@ describe('BusServiceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        AppModule
-    ],
-      providers: [BusServiceService]
+        HttpClientModule
+      ],
+      providers: [BusServiceService, BusApiService]
     });
   });
 
@@ -103,5 +102,16 @@ describe('BusServiceService', () => {
       const org = service.getOrganizationByName(toFind, orgViewModel);
       expect(org).toBeTruthy();
       expect(org.busData.length).toBe(5);
+    }));
+  it('should convert bus view model to notes view model correctly',
+    inject([BusServiceService, BusApiService], (service: BusServiceService) => {
+      const toFind = 'Sydney Buses';
+      const orgViewModel = service.converToOrganizationViewModel(mockData);
+      const org = service.getOrganizationByName(toFind, orgViewModel);
+      org.notes = 'test notes';
+      const notesModel = service.convertOrganisationViewModelToNotesModel(org);
+      expect(notesModel).toBeTruthy();
+      expect(notesModel.organisation).toBe('Sydney Buses');
+      expect(notesModel.notes).toBe('test notes');
     }));
 });

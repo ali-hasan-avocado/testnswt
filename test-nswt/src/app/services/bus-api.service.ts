@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BusInfoByOrganization} from '../models/models';
+import { BusInfoByOrganization, BusNotesRequestModel } from '../models/models';
 
 @Injectable()
 export class BusApiService {
@@ -16,6 +16,20 @@ export class BusApiService {
       },
         // TODO: refactor this to a single responsiblity class but out of scope for the moment
         (e) => this.handleError(e, o));
+    });
+  }
+  public updateBusReportNotes(notesRequest: BusNotesRequestModel): Observable<boolean> {
+    return new Observable(o => {
+      const endpointAddress = 'someAddress'; // TODO: replace with actual address via a service may be
+      this.http.put(endpointAddress, notesRequest).subscribe((res: any) => {
+        o.next(true);
+        o.complete();
+      },
+        // TODO: refactor this to a single responsiblity class but out of scope for the moment
+        (e) => {
+          o.error(false);
+          o.complete();
+        });
     });
   }
 

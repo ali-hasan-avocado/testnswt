@@ -2,8 +2,8 @@
   <div>
     <h3>Bus Reports</h3>
   </div>
-  <div *ngFor="let orgnisation of organisations" (click)="toggle(orgnisation)">
-    <div class="row pointer">
+  <div *ngFor="let orgnisation of organisations">
+    <div class="row pointer"  (click)="toggle(orgnisation)">
       <div class="col-md-11">
         <h4>{{orgnisation}} - {{getOrgByName(orgnisation).date}}</h4>
       </div>
@@ -22,6 +22,14 @@
         <div class="col-md-4">
           <strong>{{busInfo.routeVariantCode||'UNKNOWN'}}</strong>{{busInfo.routeVariantLessCode}}</div>
         <div [class]="getStatusClasses(busInfo.status)">{{parseBusStatus(busInfo.status)}}</div>
+      </div>
+      <div class="row no-gutter">
+        <div class="col-md-12">
+            <form #f="ngForm" (ngSubmit)="onNotesSubmit(getOrgByName(orgnisation))">
+                <textarea name="txtNotes" required class="form-control" [(ngModel)]="getOrgByName(orgnisation).notes"></textarea>
+                <input type="submit" [disabled]="!f.form.valid" class="btn btn-primary" value="Save Notes" />
+              </form>
+        </div>
       </div>
     </div>
   </div>
