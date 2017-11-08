@@ -1,0 +1,3 @@
+1. The version of angular is angular 4
+2. deviationFromTimetable field in data measure deviation in milliseconds
+3. routeVariant in data has 3 characters always followed by a space or carries a value of UNKNOWN
