@@ -1,0 +1,23 @@
+.early{
+    color: royalblue;
+}
+.late{
+    color: red;
+}
+.on-time{
+    color: green;
+}
+.header-row{
+background: rgb(179,179,255);
+font-weight: bold;
+}
+.pointer{
+    cursor:pointer;
+}
+.no-gutter{
+    margin-left: 0;
+}
+.data.row{
+    height: 2.5em;
+    line-height: 2.5em;
+}
