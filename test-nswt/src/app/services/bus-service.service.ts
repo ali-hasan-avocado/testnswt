@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Subscriber';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BusApiService } from './bus-api.service';
 import { BusStatuses } from '../models/bus-statuses.enum';
-import { BusInfoByOrganization, BusInfoByOrganizationViewModel, BusInfo, BusInfoViewModel } from '../models/models';
+import { BusInfoByOrganization, BusInfoByOrganizationViewModel, BusInfo, BusInfoViewModel, BusNotesRequestModel } from '../models/models';
 
 @Injectable()
 export class BusServiceService {
@@ -15,7 +16,7 @@ export class BusServiceService {
       this.apiService.getBusReportData().subscribe((data: any) => {
         o.next(data as BusInfoByOrganization[]);
         o.complete();
-      });
+      }, error => this.bubbleError(error, o));
     });
   }
 
@@ -44,7 +45,7 @@ export class BusServiceService {
       vm.status = BusStatuses.Late;
     } else if (vm.deviationFromTimetable === 0) {
       vm.status = BusStatuses.OnTime;
-    } else{
+    } else {
       vm.status = BusStatuses.Unknown;
     }
   }
@@ -58,5 +59,24 @@ export class BusServiceService {
       const found = orgCollectionToSearch.findIndex(o => o.organisation === orgName);
       return found >= 0 ? orgCollectionToSearch[found] : null;
     }
+  }
+
+  public updatesNotes(model: BusInfoByOrganizationViewModel): Observable<boolean> {
+    const notesModel = this.convertOrganisationViewModelToNotesModel(model);
+    return new Observable<boolean>(o => {
+      this.apiService.updateBusReportNotes(notesModel).subscribe(success => {
+        o.next(success);
+        o.complete();
+      }, error => this.bubbleError(error, o));
+    });
+  }
+
+  public convertOrganisationViewModelToNotesModel(source: BusInfoByOrganizationViewModel): BusNotesRequestModel {
+    return { organisation: source.organisation, notes: source.notes };
+  }
+
+  bubbleError(error: any, o: Subscriber<any>) {
+    o.error(error);
+    o.complete();
   }
 }

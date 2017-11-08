@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BusServiceService } from '../../services/bus-service.service';
 import { BusInfoByOrganizationViewModel } from '../../models/models';
 import { BusStatuses } from '../../models/bus-statuses.enum';
+import { BaseComponent } from '../base-component';
 
 @Component({
   selector: 'app-bus-report',
@@ -9,18 +10,22 @@ import { BusStatuses } from '../../models/bus-statuses.enum';
   styleUrls: ['./bus-report.component.css'],
   providers: [BusServiceService]
 })
-export class BusReportComponent implements OnInit {
+export class BusReportComponent extends BaseComponent implements OnInit {
   private serviceInfo: BusInfoByOrganizationViewModel[];
   private organisations: string[];
   private expandCollpase: any = {};
 
-  constructor(private busService: BusServiceService) { }
+
+  constructor(private busService: BusServiceService) {
+    super();
+  }
 
   ngOnInit() {
     this.busService.getBusReportData().subscribe(data => {
       this.serviceInfo = this.busService.converToOrganizationViewModel(data);
       this.organisations = this.busService.getOrganisationNamesFromOrganisationViewModel(this.serviceInfo);
-    });
+      this.handleSuccess(false);
+    }, this.handleError);
   }
 
   private getOrgByName(orgName: string): BusInfoByOrganizationViewModel {
@@ -50,4 +55,8 @@ export class BusReportComponent implements OnInit {
     const iconClass = this.expandCollpase[orgName] ? 'fa-sort-asc' : 'fa-sort-desc';
     return `${baseClass} ${iconClass}`;
   }
+  public onNotesSubmit(model: BusInfoByOrganizationViewModel) {
+    this.busService.updatesNotes(model).subscribe(success=> this.handleSuccess(true), this.handleError);
+  }
+
 }
