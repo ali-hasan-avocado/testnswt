@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BusApiService } from './bus-api.service';
 import { BusInfoByOrganization, BusInfoByOrganizationViewModel, BusInfo, BusInfoViewModel } from '../models/models';
 
 @Injectable()
 export class BusServiceService {
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private apiService: BusApiService) { }
 
   public getBusReportData(): Observable<BusInfoByOrganization[]> {
     return new Observable<BusInfoByOrganization[]>(o => {
-      this.http.get<BusInfoByOrganization[]>('bus-services-data.json').subscribe(data => {
-        o.next(data);
+      this.apiService.getBusReportData().subscribe((data: any) => {
+        o.next(data as BusInfoByOrganization[]);
         o.complete();
-      },
-        // TODO: refactor this to a single responsiblity class but out of scope for the moment
-        (e) => this.handleError(e, o));
+      });
     });
   }
 
@@ -44,8 +42,10 @@ export class BusServiceService {
     return source.map(s => s.organisation);
   }
 
-  protected handleError(response: HttpErrorResponse, o: any) {
-    o.error(response);
-    o.complete();
+  public getOrganizationByName(orgName: string, orgCollectionToSearch: BusInfoByOrganizationViewModel[]): BusInfoByOrganizationViewModel {
+    if (orgName && orgCollectionToSearch) {
+      const found = orgCollectionToSearch.findIndex(o => o.organisation === orgName);
+      return found >= 0 ? orgCollectionToSearch[found] : null;
+    }
   }
 }

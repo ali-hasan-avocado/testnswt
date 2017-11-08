@@ -10,14 +10,20 @@ import { BusInfoByOrganizationViewModel } from '../../models/models';
 })
 export class BusReportComponent implements OnInit {
   private serviceInfo: BusInfoByOrganizationViewModel[];
+  private organisations: string[];
 
   constructor(private busService: BusServiceService) { }
 
   ngOnInit() {
     this.busService.getBusReportData().subscribe(data => {
-      this.serviceInfo = data;
-      console.log(data);
+      this.serviceInfo = this.busService.converToOrganizationViewModel(data);
+      this.organisations = this.busService.getOrganisationNamesFromOrganisationViewModel(this.serviceInfo);
     });
   }
 
+  private getOrgByName(orgName: string) {
+    if (orgName && this.serviceInfo) {
+      return this.busService.getOrganizationByName(orgName, this.serviceInfo);
+    }
+  }
 }

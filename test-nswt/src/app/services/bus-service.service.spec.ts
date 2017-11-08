@@ -1,6 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BusServiceService } from './bus-service.service';
+import { BusApiService } from './bus-api.service';
+import { AppModule } from '../app.module';
 import { BusInfoByOrganization, BusInfoByOrganizationViewModel, BusInfo, BusInfoViewModel } from '../models/models';
 describe('BusServiceService', () => {
   const mockData = [
@@ -59,12 +61,14 @@ describe('BusServiceService', () => {
   ];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [
+        AppModule
+    ],
       providers: [BusServiceService]
     });
   });
 
-  it('should be created', inject([BusServiceService], (service: BusServiceService) => {
+  it('should be created', inject([BusServiceService, BusApiService], (service: BusServiceService) => {
     expect(service).toBeTruthy();
   }));
   it('should convert bus model to its view model correctly',
@@ -78,12 +82,21 @@ describe('BusServiceService', () => {
       expect(orgViewModel[1].busData[1].routeVariantCode).toBe(undefined);
     }));
   it('should extract organizations from view model correctly',
-    inject([BusServiceService], (service: BusServiceService) => {
+    inject([BusServiceService, BusApiService], (service: BusServiceService) => {
       const orgViewModel = service.converToOrganizationViewModel(mockData);
       const organisationList = service.getOrganisationNamesFromOrganisationViewModel(orgViewModel);
       expect(organisationList).toBeTruthy();
       expect(organisationList.length).toBe(2);
       expect(organisationList[0]).toBe('Sydney Buses');
       expect(organisationList[1]).toBe('Westbus');
+    }));
+  it('should find orgnization in a collection',
+    inject([BusServiceService, BusApiService], (service: BusServiceService) => {
+      const toFind = 'Sydney Buses';
+      const orgViewModel = service.converToOrganizationViewModel(mockData);
+
+      const org = service.getOrganizationByName(toFind, orgViewModel);
+      expect(org).toBeTruthy();
+      expect(org.busData.length).toBe(5);
     }));
 });
