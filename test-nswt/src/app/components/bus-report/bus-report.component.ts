@@ -28,13 +28,13 @@ export class BusReportComponent implements OnInit {
       return this.busService.getOrganizationByName(orgName, this.serviceInfo);
     }
   }
-  private toggle(orgName: string) {
+  public toggle(orgName: string) {
     this.expandCollpase[orgName] = !this.expandCollpase[orgName];
   }
   private parseBusStatus(status: number): string {
     return BusStatuses[status];
   }
-  private getStatusClasses(status: BusStatuses): string {
+  public getStatusClasses(status: BusStatuses): string {
     const colClass = 'col-md-4';
     let styleClass = 'on-time';
     if (status === BusStatuses.Early) {
@@ -43,5 +43,10 @@ export class BusReportComponent implements OnInit {
       styleClass = 'late';
     }
     return `${colClass} ${styleClass}`;
+  }
+  public getExpandCollpaseClass(orgName: string) {
+    const baseClass = 'fa';
+    const iconClass = this.expandCollpase[orgName] ? 'fa-sort-asc' : 'fa-sort-desc';
+    return `${baseClass} ${iconClass}`;
   }
 }

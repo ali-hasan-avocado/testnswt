@@ -3,21 +3,21 @@
     <h3>Bus Reports</h3>
   </div>
   <div *ngFor="let orgnisation of organisations" (click)="toggle(orgnisation)">
-    <div class="row">
-      <div class="col-md-6">
-        <h4>{{orgnisation}}</h4>
+    <div class="row pointer">
+      <div class="col-md-11">
+        <h4>{{orgnisation}} - {{getOrgByName(orgnisation).date}}</h4>
       </div>
-      <div class="col-md-6">
-        <h5>{{getOrgByName(orgnisation).date}}</h5>
+      <div class="col-md-1">
+          <h4><i [class]="getExpandCollpaseClass(orgnisation)" aria-hidden="true"></i></h4>
       </div>
     </div>
-    <div class="row" *ngIf="expandCollpase[orgnisation]">
-      <div class="row">
+    <div class="data row" *ngIf="expandCollpase[orgnisation]">
+      <div class="row no-gutter header-row">
         <div class="col-md-4">Bus ID</div>
         <div class="col-md-4">Route Variant</div>
         <div class="col-md-4">Status</div>
       </div>
-      <div class="row" *ngFor="let busInfo of getOrgByName(orgnisation).busData">
+      <div class="data row no-gutter" *ngFor="let busInfo of getOrgByName(orgnisation).busData">
         <div class="col-md-4">{{busInfo.busId}}</div>
         <div class="col-md-4">
           <strong>{{busInfo.routeVariantCode||'UNKNOWN'}}</strong>{{busInfo.routeVariantLessCode}}</div>
