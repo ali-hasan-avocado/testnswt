@@ -42,8 +42,10 @@ export class BusServiceService {
       vm.status = BusStatuses.Early;
     } else if (vm.deviationFromTimetable > 0) {
       vm.status = BusStatuses.Late;
-    } else {
+    } else if (vm.deviationFromTimetable === 0) {
       vm.status = BusStatuses.OnTime;
+    } else{
+      vm.status = BusStatuses.Unknown;
     }
   }
   public getOrganisationNamesFromOrganisationViewModel(source: BusInfoByOrganizationViewModel[]): string[] {

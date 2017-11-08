@@ -4,5 +4,5 @@
 4. Setting up a global error handler for http requests is out of scope
 5. json data file will be available in app root folder
 6. Only one row of data is present in result set for one organisation for a date e.g. Sydney buses has one row for date 25/09/2015
-7. positive deviationFromTimetable means late, zero deviation means on-time and minus deviation value indicates early.
+7. positive deviationFromTimetable means late, zero deviation means on-time and minus deviation value indicates early, null means its UNKNOWN.	
 8. Unknown route variants can also be displayed bold.

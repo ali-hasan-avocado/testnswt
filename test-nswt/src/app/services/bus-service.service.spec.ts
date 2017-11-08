@@ -83,7 +83,7 @@ describe('BusServiceService', () => {
       expect(orgViewModel[0].busData[0].routeVariantLessCode).toBe(' 2 1');
       expect(orgViewModel[0].busData[0].status).toBe(BusStatuses.Late);
       expect(orgViewModel[0].busData[3].status).toBe(BusStatuses.Early);
-      expect(orgViewModel[1].busData[1].status).toBe(BusStatuses.OnTime);
+      expect(orgViewModel[1].busData[1].status).toBe(BusStatuses.Unknown);
       expect(orgViewModel[1].busData[1].routeVariantCode).toBe(undefined);
     }));
   it('should extract organizations from view model correctly',

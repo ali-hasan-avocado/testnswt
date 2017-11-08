@@ -36,12 +36,13 @@ export class BusReportComponent implements OnInit {
   }
   public getStatusClasses(status: BusStatuses): string {
     const colClass = 'col-md-4';
-    let styleClass = 'on-time';
-    if (status === BusStatuses.Early) {
-      styleClass = 'early';
-    } else if (status === BusStatuses.Late) {
-      styleClass = 'late';
-    }
+    const stylesClasses = [
+      { status: BusStatuses.Early, className: 'early' },
+      { status: BusStatuses.Late, className: 'late' },
+      { status: BusStatuses.OnTime, className: 'on-time' },
+      { status: BusStatuses.Unknown, className: '' },
+    ];
+    const styleClass = stylesClasses.find(s => s.status === status).className;
     return `${colClass} ${styleClass}`;
   }
   public getExpandCollpaseClass(orgName: string) {
