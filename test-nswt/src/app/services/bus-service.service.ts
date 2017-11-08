@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BusInfoByOrganization, BusInfoByOrganizationViewModel, BusInfo, BusInfoViewModel } from '../models/models';
 
 @Injectable()
 export class BusServiceService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
 
   public getBusReportData(): Observable<BusInfoByOrganization[]> {
     return new Observable<BusInfoByOrganization[]>(o => {
-      // TODO: get data from json file logic sits here...
+      this.http.get<BusInfoByOrganization[]>('bus-services-data.json').subscribe(data => {
+        o.next(data);
+        o.complete();
+      },
+        // TODO: refactor this to a single responsiblity class but out of scope for the moment
+        (e) => this.handleError(e, o));
     });
   }
 
@@ -36,5 +42,10 @@ export class BusServiceService {
   public getOrganisationNamesFromOrganisationViewModel(source: BusInfoByOrganizationViewModel[]): string[] {
     // TODO: conversion logic for translating from model to view model at bus info level
     return source.map(s => s.organisation);
+  }
+
+  protected handleError(response: HttpErrorResponse, o: any) {
+    o.error(response);
+    o.complete();
   }
 }
