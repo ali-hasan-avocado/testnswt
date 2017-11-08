@@ -71,7 +71,6 @@ describe('BusServiceService', () => {
       const orgViewModel = service.converToOrganizationViewModel(mockData);
       expect(orgViewModel).toBeTruthy();
       expect(orgViewModel.length).toBe(2);
-      expect(orgViewModel.map(o => o.busData).length).toBe(8);
       expect(orgViewModel[0].busData.length).toBe(5);
       expect(orgViewModel[1].busData.length).toBe(3);
       expect(orgViewModel[0].busData[0].routeVariantCode).toBe('891');
